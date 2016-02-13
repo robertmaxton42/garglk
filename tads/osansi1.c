@@ -142,15 +142,21 @@ int osfputs(const char *buf, osfildef *fp)
  *   while os_fprint() takes an explicit separate length argument that might
  *   not end with a null terminator.  
  */
+#warning Testing noui version
+#if 0
 void os_fprintz(osfildef *fp, const char *str)
 {
     fwrite(str, 1, strlen(str), fp);
 }
+#endif
 
+#warning Testing noui version
+#if 0
 void os_fprint(osfildef *fp, const char *str, size_t len)
 {
     fwrite(str, 1, len, fp);
 }
+#endif
 
 /* 
  *   Write bytes to file.  Return 0 on success, non-zero on error.  

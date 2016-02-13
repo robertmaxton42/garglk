@@ -30,6 +30,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdint.h>
+#include <stdarg.h>
+
+#include <dirent.h>
+#include <sys/stat.h>
 
 #define TRUE 1
 #define FALSE 0
@@ -118,6 +123,8 @@ int os_memicmp(const char *a, const char *b, int n);
 #define OS_NEWLINE_SEQ "\n"
 #endif
 
+#define OSPATHPWD "."
+
 #define OSFSK_SET 0
 #define OSFSK_CUR 1
 #define OSFSK_END 2
@@ -139,6 +146,7 @@ char *osfgets(char *buf, size_t len, osfildef *fp);
 int osfputs(const char *buf, osfildef *fp);
 void os_fprintz(osfildef *fp, const char *str);
 void os_fprint(osfildef *fp, const char *str, size_t len);
+int os_vasprintf(char **bufptr, const char *fmt, va_list ap);
 int osfwb(osfildef *fp, const void *buf, int bufl);
 int osfrb(osfildef *fp, void *buf, int bufl);
 size_t osfrbc(osfildef *fp, void *buf, size_t bufl);
@@ -180,6 +188,46 @@ char *os_strlwr(char *s);
  *   TADS 2 swapping configuration.  Define OS_DEFAULT_SWAP_ENABLED to 0
  */
 #define OS_DEFAULT_SWAP_ENABLED   0
+
+/*
+ *   TADS thread-local storage.
+ */
+#define OS_DECLARATIVE_TLS
+#define OS_DECL_TLS(t, v) t v
+
+/* Adapted from src/osfrobtads.h from FrobTADS.
+ * FrobTADS copyright (C) 2009 Nikos Chantziaras.
+ */
+
+/* Directory handle for searches via os_open_dir() et al. */
+typedef DIR* osdirhdl_t;
+
+/* file type/mode bits */
+#define OSFMODE_FILE    S_IFREG
+#define OSFMODE_DIR     S_IFDIR
+#define OSFMODE_CHAR    S_IFCHR
+#define OSFMODE_BLK     S_IFBLK
+#define OSFMODE_PIPE    S_IFIFO
+#define OSFMODE_LINK    S_IFLNK
+#ifdef S_IFSOCK
+#define OSFMODE_SOCKET  S_IFSOCK
+#else
+#define OSFMODE_SOCKET  0
+#endif
+
+/* File attribute bits. */
+#define OSFATTR_HIDDEN  0x0001
+#define OSFATTR_SYSTEM  0x0002
+#define OSFATTR_READ    0x0004
+#define OSFATTR_WRITE   0x0008
+
+/* Get a file's stat() type. */
+int osfmode( const char* fname, int follow_links, unsigned long* mode,
+             unsigned long* attr );
+
+/* Rename a file. */
+#define os_rename_file(from, to) (rename(from, to) == 0)
+/* End FrobTADS. */
 
 #ifdef __cplusplus
 }

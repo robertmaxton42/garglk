@@ -49,6 +49,8 @@ TADS2SRCS =
     execmd.c fio.c fioxor.c getstr.c ler.c linfdum.c lst.c mch.c
     mcm.c mcs.c obj.c oserr.c os0.c out.c output.c ply.c
     qas.c regex.c run.c runstat.c suprun.c trd.c voc.c vocab.c
+
+    osnoui.c osstzprs.c ostzposix.c
     ;
 
 
@@ -73,6 +75,8 @@ TADS3SRCS =
     tcprs.cpp tcprsstm.cpp tcprs_rt.cpp tcprsnf.cpp tcprsnl.cpp
     tct3.cpp tct3unas.cpp tct3stm.cpp tct3nl.cpp tct3_d.cpp
     tcerr.cpp tcerrmsg.cpp
+
+    vmbignumlib.cpp vmop.cpp vmtz.cpp vmdate.cpp vmfilnam.cpp vmtzobj.cpp
     ;
 
 if $(HTMLMODE) = yes
@@ -102,9 +106,11 @@ Main $(GARGLKPRE)tadsr :
     t3indlg.cpp
     memicmp.c
     vmuni_cs.cpp
+
+    osportable.cc
     ;
 
-LinkLibraries $(GARGLKPRE)tadsr : libtads2 libtads3 ;
+LinkLibraries $(GARGLKPRE)tadsr : libtads3 libtads2 ;
 
 LINK on $(GARGLKPRE)tadsr$(SUFEXE) = $(CXX) ;
 

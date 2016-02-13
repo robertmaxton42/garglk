@@ -106,6 +106,8 @@ void os_gen_rand_bytes(unsigned char *buf, size_t len)
 /*
  *   Generate a name for a temporary file.
  */
+#warning Testing noui version
+#if 0
 int os_gen_temp_filename(char *buf, size_t buflen)
 {
     char tmpdir[OSFNMAX], fname[50];
@@ -126,6 +128,7 @@ int os_gen_temp_filename(char *buf, size_t buflen)
     /* success */
     return TRUE;
 }
+#endif
 
 /* ------------------------------------------------------------------------ */
 /*
@@ -749,9 +752,10 @@ void os_get_charmap(char *mapname, int charmap_id)
 
 /*
  *   Implementation of vasprintf for MinGW.
+ *   NOTE: Because vasprintf is not standard, unconditionally define it
+ *   here, but with a name that won't clash with versions that do exist.
  */
-#ifndef vasprintf
-int vasprintf(char **sptr, const char *fmt, va_list argv)
+int xvasprintf(char **sptr, const char *fmt, va_list argv)
 {
     int wanted = vsnprintf(*sptr = NULL, 0, fmt, argv);
     if((wanted < 0) || ((*sptr = malloc( 1 + wanted )) == NULL))
@@ -759,19 +763,18 @@ int vasprintf(char **sptr, const char *fmt, va_list argv)
 
     return vsprintf(*sptr, fmt, argv);
 }
-#endif
 
 int os_asprintf(char **bufptr, const char *fmt, ...)
 {
 	int retval;
 	va_list argv;
 	va_start(argv, fmt);
-	retval = vasprintf(bufptr, fmt, argv);
+	retval = xvasprintf(bufptr, fmt, argv);
 	va_end(argv);
 	return retval;
 }
 
 int os_vasprintf(char **bufptr, const char *fmt, va_list ap)
 {
-    return vasprintf(bufptr, fmt, ap);
+    return xvasprintf(bufptr, fmt, ap);
 }

@@ -161,6 +161,8 @@ osfildef *os_exeseek(const char *argv0, const char *typ)
  *   Returns true (non-zero) if a copy of the file was located, false (zero)
  *   if the file could not be found in any of the standard locations.  
  */
+#warning Testing noui version
+#if 0
 int os_locate(const char *fname, int flen, const char *arg0,
               char *buf, size_t bufsiz)
 {
@@ -172,6 +174,7 @@ int os_locate(const char *fname, int flen, const char *arg0,
     }
     return FALSE;
 }
+#endif
 
 
 /* ------------------------------------------------------------------------ */
@@ -223,11 +226,14 @@ int os_locate(const char *fname, int flen, const char *arg0,
  *   follows: if 'fname' is non-null, return fopen(fname,"w+b"); otherwise,
  *   set buf[0] to '\0' and return tmpfile().  
  */
+#warning Testing noui version
+#if 0
 osfildef *os_create_tempfile(const char *fname, char *buf)
 {
     assert(FALSE && "boom");
     return NULL;
 }
+#endif
 
 /*
  *   Delete a temporary file - this is used to delete a file created with
@@ -254,10 +260,13 @@ osfildef *os_create_tempfile(const char *fname, char *buf)
  *   library calls as follows: if 'fname' is non-null and fname[0] != '\0',
  *   then call remove(fname); otherwise do nothing.  
  */
+#warning Testing noui version
+#if 0
 int osfdel_temp(const char *fname)
 {
     return TRUE;
 }
+#endif
 
 
 /*
@@ -307,6 +316,8 @@ void os_set_pwd_file(const char *filename);
  *   filename at fn, no action should be taken.  On systems without an
  *   analogue of extensions, this routine should do nothing.  
  */
+#warning Testing noui version
+#if 0
 void os_defext(char *fn, const char *ext)
 {
     char *p;
@@ -342,15 +353,19 @@ void os_defext(char *fn, const char *ext)
     strcat(fn, ".");
     strcat(fn, ext);
 }
+#endif
 
 /*
  *   Add an extension, even if the filename currently has one 
  */
+#warning Testing noui version
+#if 0
 void os_addext(char *fn, const char *ext)
 {
     strcat(fn, ".");
     strcat(fn, ext);
 }
+#endif
 
 /* 
  *   os_remext(fn) removes the extension from fn, if present.  The buffer
@@ -358,6 +373,8 @@ void os_addext(char *fn, const char *ext)
  *   action should be taken.  For systems without an analogue of
  *   extensions, this routine should do nothing.  
  */
+#warning Testing noui version
+#if 0
 void os_remext(char *fn)
 {
     char *p;
@@ -387,6 +404,7 @@ void os_remext(char *fn)
             return;
     }
 }
+#endif
 
 /*
  *   Get a pointer to the root name portion of a filename.  Note that this
@@ -395,6 +413,8 @@ void os_remext(char *fn)
  *   sufficiently DOS-like for the extension parsing routines, the same
  *   will be true of path parsing.  
  */
+#warning Testing noui version
+#if 0
 char *os_get_root_name(const char *buf)
 {
     const char *rootname;
@@ -418,10 +438,13 @@ char *os_get_root_name(const char *buf)
     /* return the last root name candidate */
     return (char *) rootname;
 }
+#endif
 
 /*
  *   Extract the path from a filename 
  */
+#warning Testing noui version
+#if 0
 void os_get_path_name(char *pathbuf, size_t pathbuflen, const char *fname)
 {
     const char *lastsep;
@@ -494,10 +517,13 @@ void os_get_path_name(char *pathbuf, size_t pathbuflen, const char *fname)
     memcpy(pathbuf, fname, len);
     pathbuf[len] = '\0';
 }
+#endif
 
 /*
  *   Canonicalize a path: remove ".." and "." relative elements
  */
+#warning Testing noui version
+#if 0
 void canonicalize_path(char *path)
 {
     char *p;
@@ -560,10 +586,13 @@ void canonicalize_path(char *path)
             break;
     }
 }
+#endif
 
 /*
  *   Build a full path name given a path and a filename 
  */
+#warning Testing noui version
+#if 0
 void os_build_full_path(char *fullpathbuf, size_t fullpathbuflen,
                         const char *path, const char *filename)
 {
@@ -601,6 +630,7 @@ void os_build_full_path(char *fullpathbuf, size_t fullpathbuflen,
     /* add a null terminator */
     fullpathbuf[plen + flen] = '\0';
 }
+#endif
 
 /*
  *   Determine if a path is absolute or relative.  If the path starts with
@@ -611,6 +641,8 @@ void os_build_full_path(char *fullpathbuf, size_t fullpathbuflen,
  *   So, if the path contains a letter followed by a colon, we'll consider
  *   the path to be absolute. 
  */
+#warning Testing noui version
+#if 0
 int os_is_file_absolute(const char *fname)
 {
     /* if the name starts with a path separator, it's absolute */
@@ -626,13 +658,16 @@ int os_is_file_absolute(const char *fname)
     /* the path is relative */
     return FALSE;
 }
+#endif
 
 
 /*
  *   Convert an OS filename path to a relative URL 
  */
+#warning Testing noui version
+#if 0
 void os_cvt_dir_url(char *result_buf, size_t result_buf_size,
-                    const char *src_path, int end_sep)
+                    const char *src_path)
 {
     char *dst;
     const char *src;
@@ -695,22 +730,18 @@ void os_cvt_dir_url(char *result_buf, size_t result_buf_size,
         }
     }
 
-    /* 
-     *   add an additional ending separator if desired and if the last
-     *   character wasn't a separator 
-     */
-    if (end_sep && rem > 1 && !last_was_sep)
-        *dst++ = '/';
-
     /* add a null terminator and we're done */
     *dst = '\0';
 }
+#endif
 
 /*
  *   Convert a relative URL to a relative file system path name 
  */
+#warning Testing noui version
+#if 0
 void os_cvt_url_dir(char *result_buf, size_t result_buf_size,
-                    const char *src_url, int end_sep)
+                    const char *src_url)
 {
     char *dst;
     const char *src;
@@ -769,16 +800,10 @@ void os_cvt_url_dir(char *result_buf, size_t result_buf_size,
         }
     }
 
-    /* 
-     *   add an additional ending separator if desired and if the last
-     *   character wasn't a separator 
-     */
-    if (end_sep && rem > 1 && !last_was_sep)
-        *dst++ = OSPATHCHAR;
-
     /* add a null terminator and we're done */
     *dst = '\0';
 }
+#endif
 
 /*
  *   Get the absolute, fully qualified filename for a file.
@@ -850,6 +875,7 @@ static void safe_strcpy(char *dst, size_t dstlen, const char *src)
 /*
  *   Determine if the given file is in the given directory.
  */
+#if 0
 int os_is_file_in_dir(const char *filename, const char *path,
                       int allow_subdirs)
 {
@@ -950,4 +976,5 @@ int os_is_file_in_dir(const char *filename, const char *path,
         return (*p == '\0');
     }
 }
+#endif
 
